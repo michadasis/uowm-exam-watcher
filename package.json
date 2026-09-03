@@ -1,0 +1,12 @@
+{
+  "name": "uowm-exam-watcher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Watches cs.uowm.gr announcements for a new exam-schedule post and relays it to Discord via webhook. Runs as a Vercel Cron job.",
+  "dependencies": {
+    "@upstash/redis": "^1.34.3",
+    "cheerio": "^1.0.0",
+    "mammoth": "^1.8.0",
+    "pdf-parse": "^1.1.1"
+  }
+}

@@ -1,5 +1,8 @@
 // Vercel Cron target: GET /api/check-timetable
 //
+// .mjs on purpose: @sparticuz/chromium and puppeteer-core are ESM-only, and a
+// plain .js function here gets compiled to CommonJS by Vercel.
+//
 // Watches the "Ωρολόγιο Πρόγραμμα Μαθημάτων" page, picks the newest document,
 // converts it to PDF (docx-preview + headless Chromium, no paid services),
 // posts it to Discord in an embed with the PDF attached, then pings the
@@ -11,8 +14,6 @@
 
 import { Redis } from "@upstash/redis";
 import * as cheerio from "cheerio";
-import chromium from "@sparticuz/chromium";
-import puppeteer from "puppeteer-core";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -101,6 +102,9 @@ const FONT_CSS = `
 `;
 
 async function docxToPdf(buf) {
+  // Loaded lazily so ?dryRun=1 and "nothing new" runs never boot Chromium.
+  const { default: chromium } = await import("@sparticuz/chromium");
+  const { default: puppeteer } = await import("puppeteer-core");
 
   const [docxPreviewJs, jszipJs] = await Promise.all([
     readFile(path.join(path.dirname(require.resolve("docx-preview")), "docx-preview.min.js"), "utf8"),

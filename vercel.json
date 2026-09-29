@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/check-timetable.js": {
+    "api/check-timetable.mjs": {
       "maxDuration": 60,
       "includeFiles": "node_modules/{@sparticuz/chromium/bin,docx-preview/dist,jszip/dist}/**"
     }

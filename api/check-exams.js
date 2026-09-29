@@ -21,6 +21,11 @@ const EXAMS_PAGE_URL =
   "https://cs.uowm.gr/archiki-selida/programma-spoudwn/programma-exetaseon/";
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 const LAST_SEEN_KEY = "uowm:exams-page:last-doc-url";
+// Προσωρινή άδεια + Φοιτητές
+const PING_ROLE_IDS = (process.env.EXAMS_PING_ROLE_IDS || "1553097744984571935,1553095048260751390")
+  .split(",")
+  .map((id) => id.trim())
+  .filter(Boolean);
 
 // Vercel's Storage tab connects Upstash Redis under the legacy "KV_"
 // variable names (KV_REST_API_URL / KV_REST_API_TOKEN), not Upstash's own
@@ -161,10 +166,10 @@ async function relayToDiscord(doc, text, fileBuf) {
   await postWithFile("📎 Πρωτότυπο αρχείο", { buf: fileBuf, name: fileName });
   await sleep(400);
 
-  // 4. Ping everyone now that the schedule is fully posted.
+  // 4. Ping the student roles now that the schedule is fully posted.
   await postJson({
-    content: "@everyone",
-    allowed_mentions: { parse: ["everyone"] },
+    content: PING_ROLE_IDS.map((id) => `<@&${id}>`).join(" "),
+    allowed_mentions: { roles: PING_ROLE_IDS },
   });
 }
 

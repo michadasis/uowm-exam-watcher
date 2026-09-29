@@ -4,9 +4,13 @@
   "private": true,
   "description": "Watches cs.uowm.gr announcements for a new exam-schedule post and relays it to Discord via webhook. Runs as a Vercel Cron job.",
   "dependencies": {
+    "@sparticuz/chromium": "^153.0.0",
     "@upstash/redis": "^1.34.3",
     "cheerio": "^1.0.0",
+    "docx-preview": "^0.4.1",
+    "jszip": "^3.10.2",
     "mammoth": "^1.8.0",
-    "pdf-parse": "^1.1.1"
+    "pdf-parse": "^1.1.1",
+    "puppeteer-core": "^25.12.0"
   }
 }

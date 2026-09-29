@@ -78,3 +78,23 @@ The one thing likely to need a tweak later: `fetchCurrentExamDoc()` in
 newest first — standard WordPress page markup. If they restructure that
 page (different layout, oldest-first ordering, etc.), adjust the selector
 or ordering logic there.
+
+## Timetable watcher
+
+`api/check-timetable.js` watches the
+[Ωρολόγιο Πρόγραμμα](https://cs.uowm.gr/archiki-selida/orologio-programma-mathimaton/)
+page. It picks the newest document (highest `/uploads/YYYY/MM/` path, ties go
+to the first link on the page), converts it to PDF by rendering the .docx
+with `docx-preview` in headless Chromium (`@sparticuz/chromium`, free, no
+LibreOffice needed), posts it to Discord in an embed with
+the PDF attached, then pings the `Προσωρινή άδεια` and `Φοιτητές` roles. The last posted URL is
+stored in Redis under `uowm:timetable-page:last-doc-url`.
+
+Extra env var on Vercel:
+
+- `TIMETABLE_WEBHOOK_URL`: webhook of the timetable channel
+
+Testing:
+
+- `/api/check-timetable?dryRun=1` shows what it detected, posts nothing
+- `/api/check-timetable?preview=1` returns the converted PDF, posts nothing

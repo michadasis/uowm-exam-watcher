@@ -1,8 +1,18 @@
 {
+  "functions": {
+    "api/check-timetable.js": {
+      "maxDuration": 60,
+      "includeFiles": "node_modules/{@sparticuz/chromium/bin,docx-preview/dist,jszip/dist}/**"
+    }
+  },
   "crons": [
     {
       "path": "/api/check-exams",
       "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/check-timetable",
+      "schedule": "5 13 * * *"
     }
   ]
 }
